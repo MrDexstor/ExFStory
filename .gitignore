@@ -1,0 +1,13 @@
+run/
+
+!build/
+build/*
+!build/libs/
+
+bin/
+
+.vscode/
+.idea/
+.gradle/
+
+hs_err*
