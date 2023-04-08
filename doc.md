@@ -1,7 +1,7 @@
 ## ApiJS  
-### Methods
-* [void][void] **printError([String][String] arg0)** - Logs an error to the console and the chat.
-* [void][void] **printInfo([String][String] arg0)** - Logs the information to the console and the chat.
+### Methods  
+* [void][void] **printError([String][String] arg0)** - Logs an error to the console and the chat.        
+* [void][void] **printInfo([String][String] arg0)** - Logs the information to the console and the chat.  
 ### Fields
 ## PlayerJS
 ### Methods
@@ -23,7 +23,6 @@
 ### Fields
 ## NpcJS
 ### Methods
-* [void][void] **animHold([String][String] arg0)** - Play anim once and Hold on Last Frame
 * [void][void] **animLoop([String][String] arg0)** - Play anim in a Loop
 * [void][void] **animPlayOnce([String][String] arg0)** - Play anim Only Once
 * [void][void] **despawnSelf()** - Despawns/Removes npc from world.
@@ -31,30 +30,33 @@
 * [double][double] **getX()** - Gets NPC's X position.
 * [double][double] **getY()** - Gets NPC's Y position.
 * [double][double] **getZ()** - Gets NPC's Z position.
-* [void][void] **moveToPosition([double[]][double] arg0, [double][double] arg1)** - Moves NPC to position with preset speed.
 * [void][void] **moveToPosition([double][double] arg0, [double][double] arg1, [double][double] arg2)** - Moves NPC to position with default speed. 
 
 * [void][void] **moveToPosition([double][double] arg0, [double][double] arg1, [double][double] arg2, [double][double] arg3)** - Moves NPC to position with preset speed.
 * [void][void] **moveToPosition([double[]][double] arg0)** - Moves NPC to position with default speed.
+* [void][void] **moveToPosition([double[]][double] arg0, [double][double] arg1)** - Moves NPC to position with preset speed.
 * [void][void] **setEntityFocused([Entity][Entity] arg0)** - Focuses npc on another entity.
-* [void][void] **setEntityFocused()** - Makes npc don't focus on anything.
 * [void][void] **setEntityFocused([JSResource][JSResource] arg0)** - Focuses npc on another entity.
+* [void][void] **setEntityFocused()** - Makes npc don't focus on anything.
 * [void][void] **setHeadRotation([float][float] arg0)** - Rotates NPC's head by Y/yaw.
 * [void][void] **setIdleAnimation([String][String] arg0)** - Changes default idle animation.
-* [void][void] **setPosition([double][double] arg0, [double][double] arg1, [double][double] arg2)** - Sets NPC's position.
 * [void][void] **setPosition([double[]][double] arg0)** - Sets NPC's position.
+* [void][void] **setPosition([double][double] arg0, [double][double] arg1, [double][double] arg2)** - Sets NPC's position.
 * [void][void] **setWalkAnimation([String][String] arg0)** - Changes default walking animation.
 * [void][void] **setX([double][double] arg0)** - Sets NPC's X position.
 * [void][void] **setY([double][double] arg0)** - Sets NPC's Y position.
 * [void][void] **setZ([double][double] arg0)** - Sets NPC's Z position.
-* [void][void] **stopHold()** - Stops playing anim.
 * [void][void] **stopLoop()** - Stops playing anim.
 * [void][void] **stopPlayOnce()** - Stops playing anim.
 ### Fields
 ## SceneJS
 ### Methods
 * [SceneJS][SceneJS] **addAction([Consumer][Consumer] arg0, [ActionEvent][ActionEvent] arg1)** - Adds action to the scene.
+* [void][void] **createNpc([World][World] arg0, [NpcBuilder][NpcBuilder] arg1, [double[]][double] arg2)** - Creates an npc.
 * [void][void] **endScene()** - Ends the scene
+* [NpcJS][NpcJS] **getNpc([String][String] arg0)** - Gets npc by its id.
+* [void][void] **showFadeScreen([int][int] arg0)** - Creates a smooth appearing black rectangle that lasts for n ticks.
+* [void][void] **showFadeScreen([int][int] arg0, [String][String] arg1)** - Creates a smooth appearing colored rectangle that lasts for n ticks.   
 ### Fields
 ## ActionPacketData
 ### Methods
@@ -73,13 +75,26 @@
 ## AnimState
 ### Methods
 ### Fields
-* [int][int] **HOLD** - Play anim once and Hold on Last Frame
 * [int][int] **LOOP** - Play anim in a Loop
 * [int][int] **PLAY_ONCE** - Play anim Only Once
 ## ActionEvent
 ### Methods
 * [ActionEvent][ActionEvent] **DEF()** - Create default action event. Activates on PlayAction keybinding.
+* [ActionEvent][ActionEvent] **DELAY([int][int] arg0)** - Creates on ticks passed (delay) action event. Activates when timer in ticks is finished. 
+
 * [ActionEvent][ActionEvent] **MSG_SENT([String[]][String] arg0)** - Creates on message sent action event. Activates when a message with defined keywords is sent.
+### Fields
+## NpcBuilder
+### Methods
+* [NpcBuilder][NpcBuilder] **asAlex([String][String] arg0, [String][String] arg1, [String][String] arg2)** - Npc with default alex model and animations. Custom: id, name, texturePath
+* [NpcBuilder][NpcBuilder] **asSteve([String][String] arg0, [String][String] arg1, [String][String] arg2)** - Npc with default steve model and animations. Custom: id, name, texturePath
+* [NpcBuilder][NpcBuilder] **withAnimation([String][String] arg0)** - Sets npc animation path.
+* [NpcBuilder][NpcBuilder] **withId([String][String] arg0)** - Sets npc id.
+* [NpcBuilder][NpcBuilder] **withModel([String][String] arg0)** - Sets npc model path.
+* [NpcBuilder][NpcBuilder] **withName([String][String] arg0)** - Sets npc name.
+* [NpcBuilder][NpcBuilder] **withScale([double[]][double] arg0)** - Sets npc scale. NOT IMPLEMENTED
+* [NpcBuilder][NpcBuilder] **withScale([double][double] arg0, [double][double] arg1, [double][double] arg2)** - Sets npc scale. NOT IMPLEMENTED    
+* [NpcBuilder][NpcBuilder] **withTexture([String][String] arg0)** - Sets npc texture path.
 ### Fields
 
 [void]: https://docs.oracle.com/javase/8/docs/api/java/lang/Void.html
@@ -112,3 +127,4 @@
 [PlayerJS]: Classes#PlayerJS
 [ApiJS]: Classes#ApiJS
 [Consumer]: https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html
+[NpcBuilder]: Classes#NpcBuilder

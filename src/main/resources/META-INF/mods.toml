@@ -4,8 +4,8 @@ license="All rights reserved"
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
 [[mods]] #mandatory
 modId="forgestory" #mandatory
-version="1.0-beta" #mandatory
-displayName="ForgeStory" #mandatory
+version="1.0-rel" #mandatory
+displayName="ForgeStory (OpenStory)" #mandatory
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 #displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
 logoFile="forgestory.png" #optional

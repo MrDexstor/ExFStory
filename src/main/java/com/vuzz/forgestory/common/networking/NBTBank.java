@@ -38,7 +38,7 @@ public class NBTBank {
     public void flush(Entity entity) {
         Set<String> keys = clientData.getAllKeys();
         if(keys.size() == 0) return;
-        String[] clientKeys = (String[]) keys.toArray();
+        String[] clientKeys = keys.toArray(new String[0]);
         ClientPacket clientPacket = new ClientPacket(clientData,entity.getId());
         Networking.CHANNEL.send(PacketDistributor.TRACKING_ENTITY.with(() -> entity),clientPacket);
         for(String cKey : clientKeys) clientData.remove(cKey);

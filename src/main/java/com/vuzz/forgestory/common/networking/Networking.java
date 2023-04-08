@@ -16,6 +16,7 @@ public class Networking {
         CHANNEL = NetworkRegistry.newSimpleChannel(new ResourceLocation(ForgeStory.MOD_ID, "network"), () -> "1.0", s -> true, s -> true);
         CHANNEL.registerMessage(nextID(), ActionPacket.class, ActionPacket::encode, ActionPacket::new, ActionPacket::handle);
         CHANNEL.registerMessage(nextID(), ClientPacket.class, ClientPacket::encode, ClientPacket::new, ClientPacket::handle);
+        CHANNEL.registerMessage(nextID(), FadeScreenPacket.class, FadeScreenPacket::encode, FadeScreenPacket::new, FadeScreenPacket::handle);
     }
 
 }

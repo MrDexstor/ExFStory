@@ -11,3 +11,4 @@ bin/
 .gradle/
 
 hs_err*
+replay_pid*

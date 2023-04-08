@@ -25,9 +25,6 @@ public class ApiJS implements JSResource {
 
         @Documentate(desc = "Play anim in a Loop")
         public static final int LOOP = 1;
-
-        @Documentate(desc = "Play anim once and Hold on Last Frame")
-        public static final int HOLD = 2;
     }
 
     public static class PrintType {
@@ -48,30 +45,47 @@ public class ApiJS implements JSResource {
         public String id = "dummy";
         public String name = "NPC";
         public String texturePath = "forgestory:textures/entity/npc";
-        public String modelPath = "forgestory:geo/npc.geo";
+        public String modelPath = "forgestory:geo/steve.geo";
         public String animationPath = "forgestory:animations/npc.animation";
         public double[] scale = new double[] {1d,1d,1d};
 
+        @Documentate(desc = "Npc with default steve model and animations. Custom: id, name, texturePath")
         public NpcBuilder asSteve(String id, String name, String texturePath) {
             this.id = id;
             this.name = name;
             this.texturePath = texturePath;
+            modelPath = "forgestory:geo/steve.geo";
             return this;
         }
 
+        @Documentate(desc = "Npc with default alex model and animations. Custom: id, name, texturePath")
         public NpcBuilder asAlex(String id, String name, String texturePath) {
             this.id = id;
             this.name = name;
             this.texturePath = texturePath;
+            modelPath = "forgestory:geo/alex.geo";
             return this;
         }
 
+        @Documentate(desc = "Sets npc id.")
         public NpcBuilder withId(String id) { this.id = id; return this; }
+
+        @Documentate(desc = "Sets npc name.")
         public NpcBuilder withName(String name) { this.name = name; return this; }
+
+        @Documentate(desc = "Sets npc texture path.")
         public NpcBuilder withTexture(String texture) { this.texturePath = texture; return this; }
+
+        @Documentate(desc = "Sets npc model path.")
         public NpcBuilder withModel(String model) { this.modelPath = model; return this; }
+
+        @Documentate(desc = "Sets npc animation path.")
         public NpcBuilder withAnimation(String animation) { this.animationPath = animation; return this; }
+
+        @Documentate(desc = "Sets npc scale. NOT IMPLEMENTED")
         public NpcBuilder withScale(double[] scale) { this.scale = scale; return this; }
+
+        @Documentate(desc = "Sets npc scale. NOT IMPLEMENTED")
         public NpcBuilder withScale(double x, double y, double z) { return withScale(new double[] {x,y,z}); }
 
     }

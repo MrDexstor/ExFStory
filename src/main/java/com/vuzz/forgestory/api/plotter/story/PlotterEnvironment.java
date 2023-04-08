@@ -17,6 +17,7 @@ public class PlotterEnvironment extends Environment {
     public Root root;
     public Story story;
     public SceneJS scene;
+    public WorldJS world;
 
     public ActionEvent e = ActionEvent.DEF();
 
@@ -28,6 +29,7 @@ public class PlotterEnvironment extends Environment {
         this.story = inst.getScene().story;
         this.root = new Root();
         this.api = new ApiJS();
+        this.world = new WorldJS(player.level);
     }
 
 }

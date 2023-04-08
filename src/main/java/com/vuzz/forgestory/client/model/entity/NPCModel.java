@@ -29,21 +29,7 @@ public class NPCModel extends AnimatedTickingGeoModel<NPCEntity> {
     public ResourceLocation getTextureLocation(NPCEntity object) {
         return new ResourceLocation("forgestory","textures/entity/npc.png");
     }
-
-    @Override
-	public void setCustomAnimations(NPCEntity animatable, int instanceId, AnimationEvent animationEvent) {
-		super.setCustomAnimations(animatable, instanceId, animationEvent);
-		IBone head = this.getAnimationProcessor().getBone("Head");
-        if(animationEvent == null) return;
-        if(animationEvent.getController() == null) return;
-        Animation anim = animationEvent.getController().getCurrentAnimation();
-		EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
-        
-        if(anim == null) return;
-        if(head == null) return;
-		head.setRotationY(head.getInitialSnapshot().rotationValueY + extraData.netHeadYaw * ((float) Math.PI / 180F));
-	}
-
+    
     public ResourceLocation parsePath(String path) {
         String id = path;
         String modId = "forgestory";
@@ -53,6 +39,22 @@ public class NPCModel extends AnimatedTickingGeoModel<NPCEntity> {
         }
         name = id.substring(id.indexOf(":")+1);
         return new ResourceLocation(modId,name+(name.endsWith(".json") ? "" : ".json"));
+    }
+
+    @Override
+    public void setCustomAnimations(NPCEntity animatable, int instanceId, AnimationEvent animationEvent) {
+        try {
+            super.setCustomAnimations(animatable, instanceId, animationEvent);
+            IBone head = this.getAnimationProcessor().getBone("Head");
+
+            EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
+            if (head != null) {
+                head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
+                head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
     
 }

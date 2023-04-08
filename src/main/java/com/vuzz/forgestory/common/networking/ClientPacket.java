@@ -22,7 +22,7 @@ public class ClientPacket {
             Minecraft mc = Minecraft.getInstance();
             Entity entity = mc.level.getEntity(uuid);
             if(entity == null) return;
-            String[] nbtKeys = (String[]) nbt.getAllKeys().toArray();
+            String[] nbtKeys = nbt.getAllKeys().toArray(new String[0]);
             for(String key : nbtKeys) {
                 entity.getPersistentData().put(key, nbt.get(key));
             }

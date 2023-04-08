@@ -16,10 +16,21 @@ public class ActionEvent {
         return new MessageSentActionEvent(keyWords);
     }
 
+    @Documentate(desc = "Creates on ticks passed (delay) action event. Activates when timer in ticks is finished.")
+    public static ActionEvent DELAY(int ticks) {
+        return new DelayActionEvent(ticks);
+    }
+
     public static class MessageSentActionEvent extends ActionEvent {
         public final String[] keyWords;
         public int type = 1;
         public MessageSentActionEvent(String[] keyWords) { this.type = 1; super.type = 1; this.keyWords = keyWords; }
+    }
+
+    public static class DelayActionEvent extends ActionEvent {
+        public final int ticks;
+        public int type = 2;
+        public DelayActionEvent(int ticks) { this.type = 2; super.type = 2; this.ticks = ticks; }
     }
 
 }

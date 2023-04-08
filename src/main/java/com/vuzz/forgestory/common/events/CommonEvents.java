@@ -4,6 +4,7 @@ import com.vuzz.forgestory.ForgeStory;
 import com.vuzz.forgestory.api.plotter.story.Root;
 import com.vuzz.forgestory.api.plotter.story.data.ActionPacketData;
 import com.vuzz.forgestory.client.events.ClientBusEvents;
+import com.vuzz.forgestory.common.command.GeneralCommand;
 import com.vuzz.forgestory.common.config.FSCommonConfig;
 import com.vuzz.forgestory.common.networking.ActionPacket;
 import com.vuzz.forgestory.common.networking.Networking;
@@ -13,6 +14,7 @@ import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import net.minecraftforge.client.event.ClientChatEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
 import net.minecraftforge.event.TickEvent.Phase;
 import net.minecraftforge.event.TickEvent.ServerTickEvent;
@@ -36,6 +38,11 @@ public class CommonEvents {
             pack.playKeyPressed = actBtnDown;
             sendActionPacket(pack);
         }
+    }
+
+    @SubscribeEvent
+    public static void onCommandsReg(RegisterCommandsEvent event) {
+        GeneralCommand.register(event.getDispatcher());
     }
 
     @SubscribeEvent

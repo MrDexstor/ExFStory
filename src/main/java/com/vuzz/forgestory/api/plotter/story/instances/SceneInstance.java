@@ -7,10 +7,13 @@ import com.vuzz.forgestory.api.plotter.story.ActionEvent;
 import com.vuzz.forgestory.api.plotter.story.PlotterEnvironment;
 import com.vuzz.forgestory.api.plotter.story.Scene;
 import com.vuzz.forgestory.api.plotter.story.Script;
+import com.vuzz.forgestory.api.plotter.story.ActionEvent.DelayActionEvent;
 import com.vuzz.forgestory.api.plotter.story.ActionEvent.MessageSentActionEvent;
 import com.vuzz.forgestory.api.plotter.story.data.ActionPacketData;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.Util;
+import net.minecraft.util.text.StringTextComponent;
 
 public class SceneInstance {
     
@@ -30,11 +33,10 @@ public class SceneInstance {
     }
 
     public void tick() {
-
+        playAction(new ActionPacketData());
 	}
 
     public void endScene() {
-        
     }
 
     public void startScene() {
@@ -50,6 +52,8 @@ public class SceneInstance {
         playAction(data);
     }
 
+    int ticksTimer = 0;
+
     public void playAction(ActionPacketData data) {
         ArrayList<Action> usingActs = sceneReg.scriptId != "" ? actsJs : sceneReg.actions;
         if(usingActs.size() <= curActIndex) return;
@@ -64,8 +68,21 @@ public class SceneInstance {
             if(data.messageSent == "") canStart = false;
         }
         else if(event.type == 0) canStart = data.playKeyPressed;
+        else if(event.type == 2) {
+            DelayActionEvent dEvent = (DelayActionEvent) event;
+            if(ticksTimer >= dEvent.ticks) {
+                canStart = true;
+                ticksTimer = 0;
+            }
+            ticksTimer++;
+        }
         if(canStart) {
-            action.getActionFunc().accept(data);
+            try {
+                action.getActionFunc().accept(data);
+            } catch (Exception e) {
+                e.printStackTrace();
+                getPlayer().sendMessage(new StringTextComponent(e.getMessage()), Util.NIL_UUID);
+            }
             curActIndex++;
         }
     }

@@ -4,6 +4,7 @@ import com.vuzz.forgestory.common.networking.NBTBank;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.inventory.EquipmentSlotType;
@@ -21,6 +22,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import software.bernie.geckolib3.util.GeckoLibUtil;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.command.arguments.EntityAnchorArgument.Type;
 
 public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickable {
 
@@ -29,9 +32,14 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
     private final NonNullList<ItemStack> armorInv = NonNullList.withSize(4, ItemStack.EMPTY);
     private final NonNullList<ItemStack> inventory = NonNullList.withSize(2, ItemStack.EMPTY);
 
-    private final NBTBank nbtBank = new NBTBank();
+    public final NBTBank nbtBank = new NBTBank();
 
     private int ticks = 0;
+
+    public Entity focusedEntity;
+
+    public double[] goToPos = new double[] {0,0,0};
+    public double speed = 1D;
 
     public NPCEntity(EntityType<? extends MobEntity> type, World world) { super(type,world); }
 
@@ -50,17 +58,29 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
         GroundPathNavigator nav = (GroundPathNavigator) getNavigation();
             nav.setCanFloat(true);
             nav.setCanOpenDoors(true);
-        if(ticks % 10 == 0) flushOnClient();
+        if(ticks % 10 == 0) {
+            setTexturePath(getPersistentData().getString("texturePath"));
+            setModelPath(getPersistentData().getString("modelPath"));
+            setAnimationPath(getPersistentData().getString("animPath"));
+            flushOnClient();
+        }
+        setHealth(20);
+        nav.moveTo(goToPos[0],goToPos[1],goToPos[2],speed);
+        if(focusedEntity != null) {
+            lookAt(Type.EYES,new Vector3d(focusedEntity.getX(),focusedEntity.getEyeY(),focusedEntity.getZ()));
+        }
         ticks++;
     }
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this,"controller",5,this::predicateDef));
+        data.addAnimationController(new AnimationController<>(this,"controller",15,this::predicateDef));
+        data.addAnimationController(new AnimationController<>(this,"c_playonce",15,this::playOnceC));
+        data.addAnimationController(new AnimationController<>(this,"c_loop",15,this::loopC));
     }
 
     private <E extends IAnimatable> PlayState predicateDef(AnimationEvent<E> event) {
-        event.getController().transitionLengthTicks = 5;
+        event.getController().transitionLengthTicks = 15;
         String idleAnim = getPersistentData().getString("idleAnim");
         String walkAnim = getPersistentData().getString("walkAnim");
         if (event.isMoving()) {
@@ -75,9 +95,40 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
         return PlayState.CONTINUE;
     }
 
-    public void setTexturePath(String texture) { nbtBank.postOnClient("texturePath", texture, NBTBank.Type.STRING); }
-    public void setModelPath(String model) { nbtBank.postOnClient("modelPath", model, NBTBank.Type.STRING); }
-    public void setAnimationPath(String model) { nbtBank.postOnClient("animPath", model, NBTBank.Type.STRING); }
+    private <E extends IAnimatable> PlayState playOnceC(AnimationEvent<E> event) {
+        event.getController().transitionLengthTicks = 15;
+        String anim = getPersistentData().getString("a_playonce");
+        if(anim == "")
+            return PlayState.STOP;
+        AnimationBuilder def = new AnimationBuilder().playOnce(anim);             
+        event.getController().setAnimation(def);
+        return PlayState.CONTINUE;
+    }
+
+    private <E extends IAnimatable> PlayState loopC(AnimationEvent<E> event) {
+        event.getController().transitionLengthTicks = 15;
+        String anim = getPersistentData().getString("a_loop");
+        if(anim == "")
+            return PlayState.STOP;
+        AnimationBuilder def = new AnimationBuilder().loop(anim);             
+        event.getController().setAnimation(def);
+        return PlayState.CONTINUE;
+    }
+
+    public void setTexturePath(String texture) { 
+        getPersistentData().putString("texturePath",texture);
+        nbtBank.postOnClient("texturePath", texture, NBTBank.Type.STRING); 
+    }
+    public void setModelPath(String model) { 
+        getPersistentData().putString("modelPath",model);
+        nbtBank.postOnClient("modelPath", model, NBTBank.Type.STRING); 
+    }
+    public void setAnimationPath(String model) { 
+        getPersistentData().putString("animPath",model);
+        nbtBank.postOnClient("animPath", model, NBTBank.Type.STRING); 
+    }
+    public void setIdleAnim(String anim) { nbtBank.postOnClient("idleAnim", anim, NBTBank.Type.STRING); }
+    public void setWalkAnim(String anim) { nbtBank.postOnClient("walkAnim", anim, NBTBank.Type.STRING); }
     public void flushOnClient() { nbtBank.flush(this); }
 
     @Override
