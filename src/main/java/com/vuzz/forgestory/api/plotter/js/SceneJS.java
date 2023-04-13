@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.function.Consumer;
 
 import com.vuzz.forgestory.annotations.Documentate;
+import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.js.ApiJS.NpcBuilder;
 import com.vuzz.forgestory.api.plotter.story.Action;
 import com.vuzz.forgestory.api.plotter.story.ActionEvent;
@@ -14,11 +15,11 @@ import com.vuzz.forgestory.common.entity.NPCEntity;
 import com.vuzz.forgestory.common.networking.FadeScreenPacket;
 import com.vuzz.forgestory.common.networking.Networking;
 
-import javafx.scene.paint.Color;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.fml.network.PacketDistributor;
@@ -50,6 +51,18 @@ public class SceneJS implements JSResource {
         Networking.CHANNEL.send(PacketDistributor.ALL.noArg(),packet);
     }
 
+    @Documentate(desc = "Enters a cutscene.")
+    public void enterCutscene(CameraMode camMode) {
+        sceneInstance.inCutscene = true;
+        sceneInstance.cutsceneCam = camMode;
+    }
+
+    @Documentate(desc = "Exits a cutscene.")
+    public void exitCutscene() {
+        sceneInstance.inCutscene = false;
+        sceneInstance.getPlayer().setGameMode(GameType.SURVIVAL);
+    }
+
     @Documentate(desc = "Creates a smooth appearing black rectangle that lasts for n ticks.")
     public void showFadeScreen(int time) { showFadeScreen(time,"FF000000"); }
 
@@ -62,7 +75,8 @@ public class SceneJS implements JSResource {
         npcEntity.setModelPath(npc.modelPath);
         npcEntity.setAnimationPath(npc.animationPath);
         npcEntity.focusedEntity = sceneInstance.getPlayer();
-        npcEntity.goToPos = pos;
+        npcEntity.setGoTo(pos[0], pos[1], pos[2], 1D);
+        npcEntity.getPersistentData().putBoolean("immortal", true);
         NpcJS npcJS = new NpcJS(npcEntity);
         localNpcs.put(npc.id, npcJS);
     }

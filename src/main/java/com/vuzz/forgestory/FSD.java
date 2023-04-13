@@ -9,18 +9,19 @@ import java.util.Comparator;
 import com.vuzz.forgestory.annotations.Documentate;
 import com.vuzz.forgestory.api.plotter.js.*;
 import com.vuzz.forgestory.api.plotter.js.ApiJS.NpcBuilder;
+import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.story.ActionEvent;
 import com.vuzz.forgestory.api.plotter.story.Story;
 import com.vuzz.forgestory.api.plotter.story.data.ActionPacketData;
 import com.vuzz.forgestory.api.plotter.story.instances.SceneInstance;
 
-public class Documentation {
+public class FSD {
 
     public static Class<?>[] toGenerate = new Class[] {
         ApiJS.class, PlayerJS.class, WorldJS.class,
         NpcJS.class, SceneJS.class, ActionPacketData.class,
         SceneInstance.class, Story.class, ApiJS.AnimState.class, ActionEvent.class,
-        NpcBuilder.class
+        NpcBuilder.class, CameraMode.class
     };
 
     public static String docString = "";
@@ -56,7 +57,10 @@ public class Documentation {
         "[PlayerJS]: Classes#PlayerJS",
         "[ApiJS]: Classes#ApiJS",
         "[Consumer]: https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html",
-        "[NpcBuilder]: Classes#NpcBuilder"
+        "[NpcBuilder]: Classes#NpcBuilder",
+        "[NpcJS]: Classes#NpcJS",
+        "[CameraMode]: Classes#CameraMode",
+        "[WorldJS]: Classes#WorldJS"
     };
 
     public static void main(String[] args) {

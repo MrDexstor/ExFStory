@@ -60,6 +60,11 @@ public class NpcJS implements JSResource {
         };
     }
 
+    @Documentate(desc = "Sets if npc can be hurt or not. True if can, false if not.")
+    public void setCanDie(boolean can) {
+        npc.getPersistentData().putBoolean("immortal", !can);
+    }
+
     @Documentate(desc = "Makes npc don't focus on anything.")
     public void setEntityFocused() { npc.focusedEntity = null; }
 
@@ -78,7 +83,7 @@ public class NpcJS implements JSResource {
 
     //Teleports and Movement
     @Documentate(desc = "Sets NPC's position.")
-    public void setPosition(double[] pos)  { npc.setPos(pos[0],pos[1],pos[2]); npc.goToPos = pos; };
+    public void setPosition(double[] pos)  { npc.setPos(pos[0],pos[1],pos[2]); npc.setGoTo(pos[0], pos[1], pos[2], 1D); };
 
     @Documentate(desc = "Sets NPC's position.")
     public void setPosition(double x, double y, double z)  { setPosition( new double[] {x,y,z} ); };
@@ -93,7 +98,7 @@ public class NpcJS implements JSResource {
     public void setZ(double z) { setPosition(getX(),getY(),z); };
 
     @Documentate(desc = "Moves NPC to position with preset speed.")
-    public void moveToPosition(double[] pos, double speed) {npc.goToPos = pos; npc.speed = speed; }
+    public void moveToPosition(double[] pos, double speed) { npc.setGoTo(pos[0], pos[1], pos[2], speed); }
 
     @Documentate(desc = "Moves NPC to position with default speed.")
     public void moveToPosition(double[] pos) { moveToPosition(pos,1D); }

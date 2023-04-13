@@ -1,5 +1,12 @@
 {
     "error" : "§c",
     "key.forgestory.play_act" : "Play Action",
-    "keylist.forgestory" : "ForgeStory"
+    "keylist.forgestory" : "ForgeStory",
+    "command.forgestory.success" : "§a§l✔Success!",
+    "command.forgestory.st_refresh" : "§6§l✔Refreshed!",
+    "command.forgestory.st_not_found" : "§c§l✖Cannot find this story!",
+    "item.forgestory.npc_creator" : "Create NPC (WIP)",
+    "item.forgestory.npc_deleter" : "Delete NPC",
+    "item.forgestory.story_refresher" : "Refresh FS",
+    "itemGroup.forgestory" : "ForgeStory"
 }

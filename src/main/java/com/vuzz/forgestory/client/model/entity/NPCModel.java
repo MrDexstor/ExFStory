@@ -21,7 +21,7 @@ public class NPCModel extends AnimatedTickingGeoModel<NPCEntity> {
     @Override
     public ResourceLocation getModelLocation(NPCEntity object) {
         String path = object.getPersistentData().getString("modelPath");
-        ResourceLocation modelPath = parsePath(path == "" ? "forgestory:geo/npc.geo" : path);
+        ResourceLocation modelPath = parsePath(path == "" ? "forgestory:geo/steve.geo" : path);
         return modelPath;
     }
 

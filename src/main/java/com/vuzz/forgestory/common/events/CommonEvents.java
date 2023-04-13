@@ -1,6 +1,7 @@
 package com.vuzz.forgestory.common.events;
 
 import com.vuzz.forgestory.ForgeStory;
+import com.vuzz.forgestory.FSC;
 import com.vuzz.forgestory.api.plotter.story.Root;
 import com.vuzz.forgestory.api.plotter.story.data.ActionPacketData;
 import com.vuzz.forgestory.client.events.ClientBusEvents;
@@ -61,6 +62,7 @@ public class CommonEvents {
 
     @SubscribeEvent()
     public static void serverStarted(FMLServerStartedEvent event) {
+        FSC.sendInformationMessage();
         Root.reloadStories();
     }
 

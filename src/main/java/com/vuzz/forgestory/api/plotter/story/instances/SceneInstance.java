@@ -2,6 +2,7 @@ package com.vuzz.forgestory.api.plotter.story.instances;
 
 import java.util.ArrayList;
 
+import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.story.Action;
 import com.vuzz.forgestory.api.plotter.story.ActionEvent;
 import com.vuzz.forgestory.api.plotter.story.PlotterEnvironment;
@@ -14,6 +15,7 @@ import com.vuzz.forgestory.api.plotter.story.data.ActionPacketData;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.world.GameType;
 
 public class SceneInstance {
     
@@ -26,6 +28,9 @@ public class SceneInstance {
 
     public int curActIndex = 0;
 
+    public boolean inCutscene = false;
+    public CameraMode cutsceneCam = CameraMode.NIL();
+
     public SceneInstance(Scene scene, ServerPlayerEntity player) {
         this.player = player;
         this.sceneReg = scene;
@@ -33,6 +38,16 @@ public class SceneInstance {
     }
 
     public void tick() {
+        if(inCutscene && cutsceneCam.type != "undef") {
+            player.setGameMode(GameType.SPECTATOR);
+            if(cutsceneCam.type == "full" || cutsceneCam.type == "pos_only") {
+                player.teleportToWithTicket(cutsceneCam.posX,cutsceneCam.posY,cutsceneCam.posZ);
+            }
+            if(cutsceneCam.type == "full" || cutsceneCam.type == "rot_only") {
+                player.xRot = (float) cutsceneCam.rotX;
+                player.yHeadRot = (float) cutsceneCam.rotY;
+            }
+        }
         playAction(new ActionPacketData());
 	}
 

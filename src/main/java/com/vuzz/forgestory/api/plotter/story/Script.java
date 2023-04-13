@@ -6,11 +6,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
 
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.ScriptableObject;
 
 import com.vuzz.forgestory.api.Environment;
+import com.vuzz.forgestory.api.plotter.story.data.PackedScriptData;
 
 public class Script {
 
@@ -44,6 +47,20 @@ public class Script {
             InputStreamReader reader = new InputStreamReader(new FileInputStream(lib),StandardCharsets.UTF_8);
             ctx.evaluateReader(scope, reader, "lib/"+lib.getName(),1,null);
         }
+    }
+
+    public PackedScriptData toPacked() {
+        PackedScriptData data = new PackedScriptData();
+            data.id = scriptId;
+        try {
+            List<String> lines = Files.readAllLines(scriptFile.toPath(),StandardCharsets.UTF_8);
+            lines.forEach((str) -> {
+                data.content += str+"\n";
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
     }
 
     public void applyEnvToScope(ScriptableObject scope, Environment env) {

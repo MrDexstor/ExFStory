@@ -2,6 +2,7 @@ package com.vuzz.forgestory.api.plotter.story;
 
 import com.vuzz.forgestory.api.Environment;
 import com.vuzz.forgestory.api.plotter.js.*;
+import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.story.instances.SceneInstance;
 
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -9,7 +10,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 public class PlotterEnvironment extends Environment {
 
     public String envId = "plotter";
-    public String version = "1";
+    public String version = "2";
     public Environment env = this;
 
     public PlayerJS player;
@@ -20,6 +21,7 @@ public class PlotterEnvironment extends Environment {
     public WorldJS world;
 
     public ActionEvent e = ActionEvent.DEF();
+    public CameraMode cam = CameraMode.NIL();
 
     public ApiJS api;
 

@@ -26,7 +26,10 @@ public class FileManager {
     }
 
     public static void listInDirAndDo(File f, String dir, FileFilter filter, Consumer<File> cb) 
-        { listInDirAndDo(new File(f,dir), filter, cb); }
+    { 
+        f.mkdir();
+        listInDirAndDo(new File(f,dir), filter, cb); 
+    }
 
 
     public static InputStreamReader createInput(File f) throws FileNotFoundException 

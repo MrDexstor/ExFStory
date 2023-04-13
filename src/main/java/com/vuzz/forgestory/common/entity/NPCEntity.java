@@ -1,5 +1,6 @@
 package com.vuzz.forgestory.common.entity;
 
+import com.vuzz.forgestory.common.items.ItemsFS;
 import com.vuzz.forgestory.common.networking.NBTBank;
 
 import net.minecraft.entity.EntityType;
@@ -7,9 +8,13 @@ import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.pathfinding.GroundPathNavigator;
+import net.minecraft.util.ActionResultType;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
 import net.minecraft.util.HandSide;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
@@ -38,9 +43,6 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
 
     public Entity focusedEntity;
 
-    public double[] goToPos = new double[] {0,0,0};
-    public double speed = 1D;
-
     public NPCEntity(EntityType<? extends MobEntity> type, World world) { super(type,world); }
 
     public static AttributeModifierMap.MutableAttribute genAttributes() {
@@ -49,6 +51,11 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
                 .add(Attributes.ARMOR,4D)
                 .add(Attributes.ARMOR_TOUGHNESS,4D)
                 .add(Attributes.MOVEMENT_SPEED,0.3);
+    }
+
+    @Override
+    public boolean hurt(DamageSource dmg, float count) {
+        return !getPersistentData().getBoolean("immortal");
     }
 
     @Override
@@ -64,12 +71,22 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
             setAnimationPath(getPersistentData().getString("animPath"));
             flushOnClient();
         }
-        setHealth(20);
-        nav.moveTo(goToPos[0],goToPos[1],goToPos[2],speed);
+        double goToX = getPersistentData().getDouble("gotox");
+        double goToY = getPersistentData().getDouble("gotoy");
+        double goToZ = getPersistentData().getDouble("gotoz");
+        double speed = getPersistentData().getDouble("gotos");
+        nav.moveTo(goToX,goToY,goToZ,speed);
         if(focusedEntity != null) {
             lookAt(Type.EYES,new Vector3d(focusedEntity.getX(),focusedEntity.getEyeY(),focusedEntity.getZ()));
         }
         ticks++;
+    }
+
+    public void setGoTo(double x, double y, double z, double s) {
+        getPersistentData().putDouble("gotox",x);
+        getPersistentData().putDouble("gotoy",y);
+        getPersistentData().putDouble("gotoz",z);
+        getPersistentData().putDouble("gotos",s);
     }
 
     @Override
@@ -77,6 +94,13 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
         data.addAnimationController(new AnimationController<>(this,"controller",15,this::predicateDef));
         data.addAnimationController(new AnimationController<>(this,"c_playonce",15,this::playOnceC));
         data.addAnimationController(new AnimationController<>(this,"c_loop",15,this::loopC));
+    }
+
+    @Override
+    public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
+        if(!player.level.isClientSide && player.getItemInHand(hand).getItem() == ItemsFS.NPC_DELETER.get())
+            remove();
+        return super.interactAt(player,vec,hand);
     }
 
     private <E extends IAnimatable> PlayState predicateDef(AnimationEvent<E> event) {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gson.internal.LinkedTreeMap;
+import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.story.data.SceneJSON;
 import com.vuzz.forgestory.api.plotter.util.CustomCasters;
 import com.vuzz.forgestory.api.plotter.util.FileManager;
@@ -18,11 +19,14 @@ public class Scene {
 
     public final Story story;
 
+    public final SceneJSON json;
+
     public Scene(Story story, SceneJSON json) {
         this.id = json.id;
         this.story = story;
         if(json.lang.equals("js")) this.scriptId = json.script;
         else if(json.lang.equals("json")) loadActionsFromJSON(json);
+        this.json = json;
     };
 
     public void loadActionsFromJSON(SceneJSON json) { loadActionsFromJSON(json.actions); }

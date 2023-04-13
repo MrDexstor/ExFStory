@@ -2,6 +2,10 @@ package com.vuzz.forgestory.api.plotter.js;
 
 import com.vuzz.forgestory.annotations.Documentate;
 
+import net.minecraft.command.CommandSource;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
+
 public class ApiJS implements JSResource {
 
     @Documentate(desc = "Logs an error to the console and the chat.")
@@ -14,6 +18,20 @@ public class ApiJS implements JSResource {
         String msg = PrintType.MSGS[type]+": "+x;
         System.out.println(msg);
     }
+
+    @Documentate(desc = "Executes command")
+    public int executeCommand(PlayerEntity player, String command) {
+        MinecraftServer server = player.level.getServer();
+            if(server == null) return 0;
+        CommandSource source = server.createCommandSourceStack()
+            .withEntity(player)
+            .withPermission(4);
+        return server.getCommands().performCommand(source, command);
+    }
+
+    @Documentate(desc = "Executes command") 
+    public int executeCommand(PlayerJS player, String command) { 
+        return executeCommand((PlayerEntity) player.getNative(), command); }
 
     @Override public Object getNative() { return this; }
     @Override public String getResourceId() { return "api"; }
@@ -37,6 +55,43 @@ public class ApiJS implements JSResource {
         public static final String[] MSGS = new String[] { "INFO","ERROR" };
     }
 
+    public static class CameraMode {
+
+        public double posX = 0;
+        public double posY = 0;
+        public double posZ = 0;
+
+        public double rotX = 0;
+        public double rotY = 0;
+
+        public String type = "undef";
+
+        public CameraMode(double px, double py, double pz, double rx, double ry, String type) {
+            posX = px;
+            posY = py;
+            posZ = pz;
+            rotX = rx;
+            rotY = ry;
+            this.type = type;
+        }
+
+        @Documentate(desc = "Full locked camera (Position & Rotation).")
+        public static CameraMode FULL(double px, double py, double pz, double rx, double ry) {
+            return new CameraMode(px,py,pz,rx,ry,"full"); }
+
+        @Documentate(desc = "Position locked camera.")
+        public static CameraMode POS_ONLY(double px, double py, double pz) {
+            return new CameraMode(px,py,pz,0,0,"pos_only"); }
+        
+        @Documentate(desc = "Rotation locked camera.")
+        public static CameraMode ROT_ONLY(double rx, double ry) {
+            return new CameraMode(0,0,0,rx,ry,"rot_only"); }
+
+        public static CameraMode NIL() {
+            return new CameraMode(0, 0, 0, 0, 0, "undef");}
+    }
+
+    @Documentate(desc = "Creates new NpcBuilder class.")
     public NpcBuilder newNpcData() {
         return new NpcBuilder();
     }

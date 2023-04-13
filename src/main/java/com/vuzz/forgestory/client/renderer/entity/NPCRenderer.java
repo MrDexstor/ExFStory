@@ -36,9 +36,13 @@ public class NPCRenderer extends GeoEntityRenderer<NPCEntity> {
     @Override
     public void render(NPCEntity entity, float entityYaw, float partialTicks, MatrixStack stack,
             IRenderTypeBuffer bufferIn, int packedLightIn) {
-        stack.pushPose();
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        stack.popPose();
+        try {
+            stack.pushPose();
+            super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
+            stack.popPose();   
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
     
 }

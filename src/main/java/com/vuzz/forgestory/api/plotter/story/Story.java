@@ -1,22 +1,30 @@
 package com.vuzz.forgestory.api.plotter.story;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import com.vuzz.forgestory.FSC;
 import com.vuzz.forgestory.annotations.Documentate;
 import com.vuzz.forgestory.api.plotter.js.JSResource;
+import com.vuzz.forgestory.api.plotter.story.data.PackedLibData;
 import com.vuzz.forgestory.api.plotter.story.data.PlayerData;
 import com.vuzz.forgestory.api.plotter.story.data.SceneJSON;
 import com.vuzz.forgestory.api.plotter.story.instances.SceneInstance;
 import com.vuzz.forgestory.api.plotter.util.FileManager;
 import com.vuzz.forgestory.api.plotter.util.Filters;
 
+import com.vuzz.forgestory.FSC;
+
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
+
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
@@ -32,6 +40,8 @@ public class Story {
     public HashMap<UUID,SceneInstance> activeScenes = new HashMap<UUID,SceneInstance>();
 
     public HashMap<UUID,PlayerData> playersData = new HashMap<UUID,PlayerData>();
+
+    public boolean isBuilded = false;
 
     public Story(String id, File folder) {
         storyId = id;
@@ -55,8 +65,10 @@ public class Story {
                 if(data.queueTimer > 0) data.queueTimer-=1;
                 else {
                     Scene scene = scenes.get(data.sceneQueued);
-                    if(scene != null)
+                    if(scene != null) {
                         startScene(scene, p);
+                        FSC.sout(FSC.udcStar+"Starting scene "+scene.id.toUpperCase()+" for "+p.getName().getString());
+                    }
                 }
                 playersData.put(playerUuid,data);
                 if(data.queueTimer % 10 == 0 && data.queueTimer >= 10) writePlayerData(data, p); 
@@ -91,6 +103,7 @@ public class Story {
         SceneInstance instance = activeScenes.get(playerEntity.getUUID());
         if(instance != null) instance.endScene();
         activeScenes.remove(playerEntity.getUUID()); 
+        
     }
 
     public void readFolders() {
@@ -114,6 +127,13 @@ public class Story {
         } catch (Exception e) { e.printStackTrace(); }
     }
 
+    public void addScene(SceneJSON json) {
+        try {
+            Scene scene = new Scene(this,json);
+            scenes.put(json.id,scene);
+        } catch (Exception e) { e.printStackTrace(); }
+    }
+
     public void addScript(File f) {
         Script scr = new Script(f);
         String name = f.getName();
@@ -123,12 +143,27 @@ public class Story {
         );
     }
 
+    public PackedLibData packLib(File lib) {
+            PackedLibData data = new PackedLibData();
+                data.id = lib.getName();
+            try {
+                List<String> lines = Files.readAllLines(lib.toPath(),StandardCharsets.UTF_8);
+                lines.forEach((str) -> {
+                    data.content += str+"\n";
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return data;
+    }
 
 
     public PlayerData readPlayerData(PlayerEntity player) {
         UUID playerUuid = player.getUUID();
         File dataFolder = new File(storyFolder,"data");
+            dataFolder.mkdir();
         File playerDataFolder = new File(dataFolder,"player");
+            playerDataFolder.mkdir();
         File playerDataFile = new File(playerDataFolder,playerUuid.toString()+".json");
 		try {
 			PlayerData playerData = FileManager.jsonToJava(playerDataFile, PlayerData.class);
@@ -142,7 +177,9 @@ public class Story {
     public void writePlayerData(PlayerData data, PlayerEntity player) {
         UUID playerUuid = player.getUUID();
         File dataFolder = new File(storyFolder,"data");
+            dataFolder.mkdir();
         File playerDataFolder = new File(dataFolder,"player");
+            playerDataFolder.mkdir();
         File playerDataFile = new File(playerDataFolder,playerUuid.toString()+".json");
         try {
 			FileManager.javaToJson(playerDataFile, data);

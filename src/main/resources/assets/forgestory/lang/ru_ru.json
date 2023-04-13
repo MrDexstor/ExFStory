@@ -1,0 +1,12 @@
+{
+    "error" : "§c",
+    "key.forgestory.play_act" : "Проиграть действие",
+    "keylist.forgestory" : "ФорджСтори",
+    "command.forgestory.success" : "§a§l✔Успешно!",
+    "command.forgestory.st_refresh" : "§6§l✔Перезагружено!",
+    "command.forgestory.st_not_found" : "§c§l✖Невозможно найти этот сюжет!",
+    "item.forgestory.npc_creator" : "Создать НПС (WIP)",
+    "item.forgestory.npc_deleter" : "Удалить НПС",
+    "item.forgestory.story_refresher" : "Перезагрузить ФС",
+    "itemGroup.forgestory" : "ФорджСтори"
+}
