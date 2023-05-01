@@ -3,7 +3,6 @@ package com.vuzz.forgestory.client.model.entity;
 import com.vuzz.forgestory.common.entity.NPCEntity;
 
 import net.minecraft.util.ResourceLocation;
-import software.bernie.geckolib3.core.builder.Animation;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.processor.IBone;
 import software.bernie.geckolib3.model.AnimatedTickingGeoModel;
@@ -42,6 +41,7 @@ public class NPCModel extends AnimatedTickingGeoModel<NPCEntity> {
     }
 
     @Override
+    @SuppressWarnings("all")
     public void setCustomAnimations(NPCEntity animatable, int instanceId, AnimationEvent animationEvent) {
         try {
             super.setCustomAnimations(animatable, instanceId, animationEvent);

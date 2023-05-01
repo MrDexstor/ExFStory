@@ -2,7 +2,6 @@ package com.vuzz.forgestory.api.plotter.story.instances;
 
 import java.util.ArrayList;
 
-import com.vuzz.forgestory.api.plotter.js.ApiJS;
 import com.vuzz.forgestory.api.plotter.js.JSResource;
 import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.js.event.*;

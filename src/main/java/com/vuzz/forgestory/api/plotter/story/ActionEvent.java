@@ -3,8 +3,6 @@ package com.vuzz.forgestory.api.plotter.story;
 import java.util.function.Supplier;
 
 import com.vuzz.forgestory.annotations.Documentate;
-import com.vuzz.forgestory.api.plotter.js.JSResource;
-
 import net.minecraft.entity.Entity;
 
 public class ActionEvent {
