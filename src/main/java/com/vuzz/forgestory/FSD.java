@@ -9,6 +9,9 @@ import java.util.Comparator;
 import com.vuzz.forgestory.annotations.Documentate;
 import com.vuzz.forgestory.api.plotter.js.*;
 import com.vuzz.forgestory.api.plotter.js.ApiJS.NpcBuilder;
+import com.vuzz.forgestory.api.plotter.js.event.EventJS;
+import com.vuzz.forgestory.api.plotter.js.event.EventManager;
+import com.vuzz.forgestory.api.plotter.js.event.MessageEvent;
 import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.story.ActionEvent;
 import com.vuzz.forgestory.api.plotter.story.Story;
@@ -21,7 +24,9 @@ public class FSD {
         ApiJS.class, PlayerJS.class, WorldJS.class,
         NpcJS.class, SceneJS.class, ActionPacketData.class,
         SceneInstance.class, Story.class, ApiJS.AnimState.class, ActionEvent.class,
-        NpcBuilder.class, CameraMode.class
+        NpcBuilder.class, CameraMode.class, BlockJS.class, EventJS.class,
+        EventManager.class,
+        MessageEvent.class
     };
 
     public static String docString = "";
@@ -60,7 +65,11 @@ public class FSD {
         "[NpcBuilder]: Classes#NpcBuilder",
         "[NpcJS]: Classes#NpcJS",
         "[CameraMode]: Classes#CameraMode",
-        "[WorldJS]: Classes#WorldJS"
+        "[WorldJS]: Classes#WorldJS",
+        "[BlockJS]: Classes#BlockJS",
+        "[EventManager]: Classes#EventManager",
+        "[MessageEvent]: Classes#MessageEvent",
+        "[EventJS]: Classes#EventJS"
     };
 
     public static void main(String[] args) {

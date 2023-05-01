@@ -20,8 +20,6 @@ import com.vuzz.forgestory.api.plotter.story.instances.SceneInstance;
 import com.vuzz.forgestory.api.plotter.util.FileManager;
 import com.vuzz.forgestory.api.plotter.util.Filters;
 
-import com.vuzz.forgestory.FSC;
-
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 

@@ -49,8 +49,8 @@ public class NPCModel extends AnimatedTickingGeoModel<NPCEntity> {
 
             EntityModelData extraData = (EntityModelData) animationEvent.getExtraDataOfType(EntityModelData.class).get(0);
             if (head != null) {
-                head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
-                head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
+                head.setRotationX(head.getRotationX() + extraData.headPitch * ((float) Math.PI / 180F));
+                head.setRotationY(head.getRotationY() + extraData.netHeadYaw * ((float) Math.PI / 180F));
             }
         } catch(Exception e) {
             e.printStackTrace();
