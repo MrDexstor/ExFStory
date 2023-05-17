@@ -1053,6 +1053,105 @@
 					}
 				}
 			}
+		},
+		"animation.npc.run": {
+			"loop": true,
+			"bones": {
+				"Head": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*600)*-2.5+15", "math.cos(query.anim_time*550)*-2.5", "math.cos(query.anim_time*500)*-2.5"]
+					},
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*550)*.5", -2]
+					}
+				},
+				"LEye": {
+					"position": {
+						"vector": [0, -0.1, 0]
+					},
+					"scale": {
+						"vector": [1.1, 0.9, 1]
+					}
+				},
+				"REye": {
+					"position": {
+						"vector": [0, -0.1, 0]
+					},
+					"scale": {
+						"vector": [1.1, 0.9, 1]
+					}
+				},
+				"Brows": {
+					"position": {
+						"vector": [0, -0.3, 0]
+					}
+				},
+				"RightArm": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*-42.5", 0, 0]
+					}
+				},
+				"RightArmKnee": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*-22.5", 0, 0]
+					}
+				},
+				"LeftArm": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*42.5", 0, 0]
+					}
+				},
+				"LeftArmKnee": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*22.5", 0, 0]
+					}
+				},
+				"RightLeg": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*42.5", 0, 0]
+					},
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*550)*-1", 0]
+					}
+				},
+				"RightLegKnee": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*22.5", 0, 0]
+					}
+				},
+				"LeftLeg": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*-42.5", 0, 0]
+					},
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*550)*-1", 0]
+					}
+				},
+				"LeftLegKnee": {
+					"rotation": {
+						"vector": ["math.cos(query.anim_time*550)*-22.5", 0, 0]
+					}
+				},
+				"NPC": {
+					"rotation": {
+						"vector": [0, 0, 0]
+					},
+					"position": {
+						"vector": [0, "math.cos(query.anim_time*550)*1", 0]
+					},
+					"scale": {
+						"vector": [1, 1, 1.1]
+					}
+				},
+				"Body": {
+					"rotation": {
+						"vector": [10, 0, 0]
+					},
+					"position": {
+						"vector": [0, 0, -2]
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

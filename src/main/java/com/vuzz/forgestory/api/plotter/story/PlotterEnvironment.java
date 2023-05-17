@@ -10,8 +10,8 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 
 public class PlotterEnvironment extends Environment {
 
-    public String envId = "plotter";
-    public String version = "2";
+    public static String envId = "plotter";
+    public static String version = "3";
     public Environment env = this;
 
     public PlayerJS player;

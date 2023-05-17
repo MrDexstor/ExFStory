@@ -71,7 +71,7 @@ public class Root {
             data.scenes = scenes;
             data.scripts = scripts;
             data.libs = libs;
-        FileManager.javaToJson(new File(buildFolder,story.storyId+".build"), data);
+        FileManager.javaToJson(new File(buildFolder,story.storyId+".fs"), data);
     }
 
     public static void unbuildStory(File f) {try {
@@ -117,7 +117,10 @@ public class Root {
 
         Story story = new Story(storyId,storyFolder);
         story.isBuilded = true;
-        addStory(story);
+        if(
+            data.compiler == PlotterEnvironment.envId && 
+            data.version == PlotterEnvironment.version
+            ) addStory(story);
     } catch (InstantiationException | IllegalAccessException e) {e.printStackTrace();}}
 
     public static void tick() {
@@ -157,7 +160,7 @@ public class Root {
     } 
 
     public static boolean addStory(File storyFile) {
-        if(storyFile.getName().endsWith(".build")) return false;
+        if(storyFile.getName().endsWith(".fs")) return false;
         Story story = new Story(storyFile.getName(), storyFile);
             createDir(storyFile,"act");
             createDir(storyFile,"lib");
