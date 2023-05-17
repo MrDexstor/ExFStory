@@ -28,7 +28,6 @@ public class ForgeStory {
         }
     };
 
-    @SuppressWarnings("unused")
     public ForgeStory() {
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
 

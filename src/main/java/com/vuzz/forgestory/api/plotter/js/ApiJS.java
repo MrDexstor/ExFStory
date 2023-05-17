@@ -2,11 +2,26 @@ package com.vuzz.forgestory.api.plotter.js;
 
 import com.vuzz.forgestory.annotations.Documentate;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.Blocks;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.registries.ForgeRegistries;
 
 public class ApiJS implements JSResource {
+
+    @Documentate(desc = "Default MC blocks.")
+    public Blocks MC_BLOCKS = new Blocks();
+
+    @Documentate(desc = "Default MC items.")
+    public Items MC_ITEMS = new Items();
 
     @Documentate(desc = "Logs an error to the console and the chat.")
     public void printError(String err) { print(err,PrintType.ERROR); }
@@ -32,6 +47,61 @@ public class ApiJS implements JSResource {
     @Documentate(desc = "Executes command") 
     public int executeCommand(PlayerJS player, String command) { 
         return executeCommand((PlayerEntity) player.getNative(), command); }
+
+    @Documentate(desc = "Creates BlockPos Class")
+    public static BlockPos createBlockPos(double[] xyz) { return new BlockPos(xyz[0],xyz[1],xyz[2]);}
+
+    @Documentate(desc = "Creates BlockPos Class")
+    public BlockPos createBlockPos(double x, double y, double z) { return new BlockPos(x,y,z); }
+
+    public double[] bpToArr(BlockPos pos) {return new double[] {pos.getX(),pos.getY(),pos.getZ()};}
+
+    @Documentate(desc = "Gets item registry by id")
+    public Item getItem(String itemId) {
+        String id = itemId;
+        String modId = "minecraft";
+        String name = "";
+        if(id.indexOf(":") != -1) {
+            modId = id.substring(0,id.indexOf(":"));
+        }
+        name = id.substring(id.indexOf(":")+1);
+        Item itemReg = ForgeRegistries.ITEMS.getValue(new ResourceLocation(modId, name));
+        return itemReg;
+    }
+
+    @Documentate(desc = "Gets block registry by id")
+    public static Block getBlock(String blockId) {
+        String id = blockId;
+        String modId = "minecraft";
+        String name = "";
+        if(id.indexOf(":") != -1) {
+            modId = id.substring(0,id.indexOf(":"));
+        }
+        name = id.substring(id.indexOf(":")+1);
+        Block itemReg = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(modId, name));
+        return itemReg;
+    }
+
+    @Documentate(desc = "Creates an ItemStack class")
+    public ItemStack createStack(Item item, int count) {
+        ItemStack stack = new ItemStack(item);
+        stack.setCount(count);
+        return stack;
+    }
+
+    @Documentate(desc = "Creates a BlockState class")
+    public static BlockState createBlockState(Block block) {
+        BlockState blockState = block.defaultBlockState();
+        return blockState;
+    }
+
+    @Documentate(desc = "Creates a BlockState class")
+    public static BlockState createBlockState(String blockId) {
+        return createBlockState(ApiJS.getBlock(blockId));
+    }
+
+
+
 
     @Override public Object getNative() { return this; }
     @Override public String getResourceId() { return "api"; }

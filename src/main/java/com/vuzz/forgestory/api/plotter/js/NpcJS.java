@@ -1,19 +1,22 @@
 package com.vuzz.forgestory.api.plotter.js;
 
 import com.vuzz.forgestory.annotations.Documentate;
+import com.vuzz.forgestory.api.plotter.js.event.EventManager;
 import com.vuzz.forgestory.common.entity.NPCEntity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
 
 import com.vuzz.forgestory.common.networking.NBTBank;
 
 public class NpcJS implements JSResource {
 
     private NPCEntity npc;
+    @Documentate(desc="Npc's event manager.")
+    public final EventManager evManager;
 
     public NpcJS(NPCEntity npc) {
         this.npc = npc;
+        this.evManager = npc.evManager;
     }
 
     // Animation Handlers
@@ -61,9 +64,13 @@ public class NpcJS implements JSResource {
     }
 
     @Documentate(desc = "Sets if npc can be hurt or not. True if can, false if not.")
-    public void setCanDie(boolean can) {
-        npc.getPersistentData().putBoolean("immortal", !can);
-    }
+    public void setCanDie(boolean can) {npc.getPersistentData().putBoolean("immortal", !can);}
+
+    @Documentate(desc = "Sets if npc has gravity or not. True if has, false if not.")
+    public void setHasGravity(boolean grav) {npc.setGravity(grav);}
+
+    @Documentate(desc = "Sets if npc can collide. True if can, false if not.")
+    public void allowCollision(boolean coll) { npc.allowCollision(coll); }
 
     @Documentate(desc = "Makes npc don't focus on anything.")
     public void setEntityFocused() { npc.focusedEntity = null; }

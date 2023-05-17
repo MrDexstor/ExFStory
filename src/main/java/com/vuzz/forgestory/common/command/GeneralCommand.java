@@ -13,6 +13,7 @@ import net.minecraft.command.Commands;
 import net.minecraft.util.text.TranslationTextComponent;
 
 public class GeneralCommand {
+    @SuppressWarnings("all")
     private static final SimpleCommandExceptionType UNKNOWN = new SimpleCommandExceptionType(new TranslationTextComponent("command." + ForgeStory.MOD_ID + ".unknown"));
     private static final SimpleCommandExceptionType STORY_NOT_FOUND = new SimpleCommandExceptionType(new TranslationTextComponent("command." + ForgeStory.MOD_ID + ".st_not_found"));
 

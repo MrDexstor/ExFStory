@@ -2,9 +2,6 @@ package com.vuzz.forgestory.common.items;
 
 import com.vuzz.forgestory.ForgeStory;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.MapItemRenderer;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraftforge.eventbus.api.IEventBus;

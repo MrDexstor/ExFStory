@@ -81,6 +81,10 @@ public class SceneJS implements JSResource {
         localNpcs.put(npc.id, npcJS);
     }
 
+    @Documentate(desc = "Creates an npc.")
+    public void createNpc(WorldJS world, NpcBuilder npc, double[] pos)  {
+        createNpc((World) world.getNative(),npc,pos);                           }
+
     @Documentate(desc = "Gets npc by its id.")
     public NpcJS getNpc(String id) {
         return localNpcs.get(id);

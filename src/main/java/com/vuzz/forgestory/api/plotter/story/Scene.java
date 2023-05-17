@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.google.gson.internal.LinkedTreeMap;
-import com.vuzz.forgestory.api.plotter.js.ApiJS.CameraMode;
 import com.vuzz.forgestory.api.plotter.story.data.SceneJSON;
 import com.vuzz.forgestory.api.plotter.util.CustomCasters;
 import com.vuzz.forgestory.api.plotter.util.FileManager;

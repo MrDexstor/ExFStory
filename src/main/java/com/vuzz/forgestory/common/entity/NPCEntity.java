@@ -1,5 +1,7 @@
 package com.vuzz.forgestory.common.entity;
 
+import com.vuzz.forgestory.api.plotter.js.event.*;
+import com.vuzz.forgestory.api.plotter.js.event.npc.*;
 import com.vuzz.forgestory.common.items.ItemsFS;
 import com.vuzz.forgestory.common.networking.NBTBank;
 
@@ -40,6 +42,7 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
     public final NBTBank nbtBank = new NBTBank();
 
     private int ticks = 0;
+    public final EventManager evManager = new EventManager();
 
     public Entity focusedEntity;
 
@@ -62,6 +65,7 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
     public void tick() {
         super.tick();
         if(level.isClientSide) return;
+        evManager.runEvent("tick", new TickEvent(ticks));
         GroundPathNavigator nav = (GroundPathNavigator) getNavigation();
             nav.setCanFloat(true);
             nav.setCanOpenDoors(true);
@@ -79,7 +83,19 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
         if(focusedEntity != null) {
             lookAt(Type.EYES,new Vector3d(focusedEntity.getX(),focusedEntity.getEyeY(),focusedEntity.getZ()));
         }
+        setNoGravity(getPersistentData().getBoolean("no_gravity"));
         ticks++;
+    }
+
+    public void allowCollision(boolean coll) { getPersistentData().putBoolean("can_collision",coll); }
+    public void setGravity(boolean grav) { getPersistentData().putBoolean("no_gravity",!grav); }
+
+    @Override
+    public boolean canCollideWith(Entity entity) {
+        boolean can = getPersistentData().getBoolean("can_collision");
+        if(can)
+            return super.canCollideWith(entity);
+        else return false;
     }
 
     public void setGoTo(double x, double y, double z, double s) {
@@ -98,8 +114,10 @@ public class NPCEntity extends MobEntity implements IAnimatable,IAnimationTickab
 
     @Override
     public ActionResultType interactAt(PlayerEntity player, Vector3d vec, Hand hand) {
-        if(!player.level.isClientSide && player.getItemInHand(hand).getItem() == ItemsFS.NPC_DELETER.get())
+        if(player.level.isClientSide) return super.interactAt(player,vec,hand);
+        if(player.getItemInHand(hand).getItem() == ItemsFS.NPC_DELETER.get())
             remove();
+        evManager.runEvent("interaction", new InteractionEvent(player, vec,hand,this));
         return super.interactAt(player,vec,hand);
     }
 
