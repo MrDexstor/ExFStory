@@ -16,7 +16,7 @@ public class FSC {
     public static String envType = "Plotter";
     public static String envVersion = "2";
     public static String envDescription = "JS/JSON availibility";
-    public static String docLink = "https://github.com/VuzZis/FS-Official/wiki";
+    public static String docLink = "https://github.com/MrDexstor/ExFStory/wiki";
 
     public static String udcTick = "✔";
     public static String udcCross = "✖";
@@ -26,7 +26,7 @@ public class FSC {
     
     public static void sendInformationMessage() {
         String logo = join(forgeStoryAscii, "\n");
-        String fsInfo = "ForgeStory "+fsVersion+" | Made by VuzZ";
+        String fsInfo = "ForgeStory "+fsVersion+" | Made by ExProjects";
         String envInfo = udcRFaceArrow+"Env: "+envType+" "+envVersion+" | "+envDescription;
         String docInfo = udcRFaceArrow+"Documentation: "+docLink;
         String headfooter = "------------------------------------";
