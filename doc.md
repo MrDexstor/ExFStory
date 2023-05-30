@@ -2,6 +2,7 @@
 ### Methods  
 * [void][void] **printError([String][String] arg0)** - Logs an error to the console and the chat.        
 * [void][void] **printInfo([String][String] arg0)** - Logs the information to the console and the chat.  
+* **MrAlxart_** - Author.  
 ### Fields
 ## PlayerJS
 ### Methods
